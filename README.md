@@ -1,10 +1,12 @@
 
-# DNCP Tablero (Versión corregida)
+# DNCP Tablero
 
-## Instalación
-pip install -r requirements.txt
+Proyecto organizado y listo para producción.
 
 ## Uso
-python downloader.py --years 2024 2025
-python processor.py --years 2024 2025
-streamlit run dashboard.py
+
+pip install -r requirements.txt
+
+python src/downloader.py --years 2024 2025
+python src/processor.py --years 2024 2025
+streamlit run app/dashboard.py
