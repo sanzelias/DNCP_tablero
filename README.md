@@ -1,12 +1,36 @@
-
 # DNCP Tablero
 
-Proyecto organizado y listo para producción.
+Tablero Streamlit para explorar datos publicos de contrataciones de Paraguay.
 
-## Uso
+La app funciona directamente con los archivos Parquet incluidos en `cache/`, sin descargar datos adicionales en el arranque.
 
+## Ejecutar localmente
+
+```bash
 pip install -r requirements.txt
+streamlit run dashboard.py
+```
 
-python src/downloader.py --years 2024 2025
-python src/processor.py --years 2024 2025
+Tambien se conserva el punto de entrada alternativo:
+
+```bash
 streamlit run app/dashboard.py
+```
+
+## Estructura
+
+- `dashboard.py`: aplicacion principal de Streamlit.
+- `app/dashboard.py`: wrapper compatible con despliegues que apunten a `app/dashboard.py`.
+- `cache/convocatorias/`: indicadores, muestras y buscador de licitaciones.
+- `cache/adjudicaciones/`: proveedores, items, evoluciones y alertas de precios.
+- `RESPALDO_PROYECTO.md`: documento de contexto del proyecto.
+
+## Despliegue en Streamlit Cloud
+
+Configurar el archivo principal como:
+
+```text
+dashboard.py
+```
+
+Streamlit instalara las dependencias desde `requirements.txt` y leera los datos versionados en `cache/`.

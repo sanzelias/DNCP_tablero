@@ -1,6 +1,6 @@
+import subprocess
+import sys
 
-import os
 
-os.system("python src/downloader.py --years 2024 2025")
-os.system("python src/processor.py --years 2024 2025")
-os.system("streamlit run app/dashboard.py")
+if __name__ == "__main__":
+    raise SystemExit(subprocess.call([sys.executable, "-m", "streamlit", "run", "dashboard.py"]))
