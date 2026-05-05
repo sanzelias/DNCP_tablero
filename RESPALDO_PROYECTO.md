@@ -3,7 +3,7 @@
 **Proyecto:** Dashboard de análisis de contrataciones públicas de Paraguay  
 **Fecha:** Marzo 2025  
 **URL pública:** [tablerodncppy.streamlit.app](https://tablerodncppy.streamlit.app)  
-**Repositorio:** [github.com/diegomezapy/tableroDNCPpy](https://github.com/diegomezapy/tableroDNCPpy)
+**Repositorio:** [github.com/sanzelias/DNCP_tablero](https://github.com/sanzelias/DNCP_tablero)
 
 ---
 
@@ -148,7 +148,7 @@ git push origin master:main
 ```bash
 TOKEN="github_pat_XXXX..."  # Generar en github.com/settings/tokens
 git -c credential.helper= push \
-  "https://diegomezapy:${TOKEN}@github.com/diegomezapy/tableroDNCPpy.git" \
+  "https://sanzelias:${TOKEN}@github.com/sanzelias/DNCP_tablero.git" \
   master:main
 ```
 
@@ -176,5 +176,5 @@ git -c credential.helper= push \
 | Código fuente (local) | `/Users/diegobernardomezabogado/.gemini/antigravity/scratch/dncp-dashboard/` |
 | Copia en Google Drive | `/Users/diegobernardomezabogado/Library/CloudStorage/GoogleDrive-dmeza.py@gmail.com/Mi unidad/DNCPpy/` |
 | Datos JSON crudos | `...scratch/dncp-dashboard/data/2025/` (solo local, 2.8 GB) |
-| Repositorio GitHub | https://github.com/diegomezapy/tableroDNCPpy |
+| Repositorio GitHub | https://github.com/sanzelias/DNCP_tablero |
 | App en producción | https://tablerodncppy.streamlit.app |
