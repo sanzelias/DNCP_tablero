@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 def process_year(year):
-    path = f"data/{year}/records.csv"
+    path = f"data/raw/{year}/records.csv"
     if not os.path.exists(path):
         print(f"Missing file for {year}")
         return pd.DataFrame()
@@ -31,7 +31,8 @@ def process_all(years):
             all_data.append(df)
 
     if not all_data:
-        return pd.DataFrame()
+        print("No data processed")
+        return
 
     final = pd.concat(all_data)
 
@@ -40,8 +41,8 @@ def process_all(years):
         monto_total=("monto", "sum")
     ).reset_index()
 
-    os.makedirs("output", exist_ok=True)
-    result.to_csv("output/evolucion_anual.csv", index=False)
+    os.makedirs("data/processed", exist_ok=True)
+    result.to_csv("data/processed/evolucion_anual.csv", index=False)
 
     print("Procesamiento completo")
 
