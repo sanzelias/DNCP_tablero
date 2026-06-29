@@ -208,7 +208,8 @@
 
 ### Pendientes
 
-* Verificar URL publica luego del push y redeploy de Streamlit Cloud.
+* Verificar URL publica luego del redeploy efectivo de Streamlit Cloud.
+* La version nueva fue subida a GitHub, pero la URL publica siguio sirviendo la version anterior durante las verificaciones posteriores al push.
 * Si Streamlit queda dormido o no redeploya, despertar o reiniciar desde Streamlit Cloud.
 * Completar pipeline reproducible de datos DNCP/OCDS y manifiestos hash/tamano/fecha.
 
@@ -224,3 +225,11 @@
 * Mantener la regla de filtros fan-out: todo filtro debe afectar KPIs, graficos, tablas, alertas y detalle.
 * Evitar lenguaje acusatorio en alertas de precios.
 * Usar la vista `Fuentes` como punto de control antes de discutir resultados.
+
+### Publicacion y verificacion posterior al push
+
+* Commit publicado en `origin/main`: `2652c4b feat: redesign Streamlit dashboard UX`.
+* `git ls-remote --heads origin main` confirmo `2652c4b4f99206c3572c25c5036919f59ec1de10`.
+* `git show origin/main:dashboard.py` confirmo `APP_VERSION = "2026.06.29-ux"` y textos `Panel de filtros` / `Resumen ejecutivo`.
+* Verificacion publica posterior al push: `https://tablero-dashboard-dncp.streamlit.app/` continuo mostrando la version anterior sin `Panel de filtros` ni `2026.06.29-ux`.
+* Estado operativo al cierre de este hito: codigo publicado en GitHub y validado localmente; redeploy/reboot de Streamlit Cloud pendiente.
