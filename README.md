@@ -1,53 +1,57 @@
+# DNCP Tablero
 
-import pandas as pd
-import os
+Tablero Streamlit para explorar datos publicos de contrataciones de Paraguay.
 
-def process_year(year):
-    path = f"data/{year}/records.csv"
-    if not os.path.exists(path):
-        print(f"Missing file for {year}")
-        return pd.DataFrame()
+La app funciona directamente con los archivos Parquet incluidos en `cache/`, sin descargar datos adicionales en el arranque.
 
-    try:
-        df = pd.read_csv(path)
-    except Exception as e:
-        print(f"Error reading {path}: {e}")
-        return pd.DataFrame()
+URL publica verificada: https://tablero-dashboard-dncp.streamlit.app/
 
-    if "fecha_adjudicacion" not in df.columns:
-        return pd.DataFrame()
+## Ejecutar localmente
 
-    df["fecha_adjudicacion"] = pd.to_datetime(df["fecha_adjudicacion"], errors="coerce")
-    df["anio"] = df["fecha_adjudicacion"].dt.year
-    df["monto"] = pd.to_numeric(df.get("monto", 0), errors="coerce").fillna(0)
+```bash
+pip install -r requirements.txt
+streamlit run dashboard.py
+```
 
-    return df
+Tambien se conserva el punto de entrada alternativo:
 
-def process_all(years):
-    all_data = []
-    for y in years:
-        df = process_year(y)
-        if not df.empty:
-            all_data.append(df)
+```bash
+streamlit run app/dashboard.py
+```
 
-    if not all_data:
-        return pd.DataFrame()
+## Estructura
 
-    final = pd.concat(all_data)
+- `dashboard.py`: aplicacion principal de Streamlit.
+- `app/dashboard.py`: wrapper compatible con despliegues que apunten a `app/dashboard.py`.
+- `cache/convocatorias/`: indicadores, muestras y buscador de licitaciones.
+- `cache/adjudicaciones/`: proveedores, items, evoluciones y alertas de precios.
+- `RESPALDO_PROYECTO.md`: documento de contexto del proyecto.
 
-    result = final.groupby("anio").agg(
-        cantidad=("monto", "count"),
-        monto_total=("monto", "sum")
-    ).reset_index()
+## Despliegue en Streamlit Cloud
 
-    os.makedirs("output", exist_ok=True)
-    result.to_csv("output/evolucion_anual.csv", index=False)
+Configurar el archivo principal como:
 
-    print("Procesamiento completo")
+```text
+dashboard.py
+```
 
-if __name__ == "__main__":
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--years", nargs="+", required=True)
-    args = parser.parse_args()
-    process_all(args.years)
+El repositorio incluye `runtime.txt` para fijar Python 3.11. Streamlit instalara las dependencias desde `requirements.txt` y leera los datos versionados en `cache/`.
+
+Si Streamlit Cloud esta configurado con otro archivo principal, usar tambien es valido:
+
+```text
+app/dashboard.py
+```
+
+Ese archivo carga el dashboard principal del repositorio.
+
+## Verificacion operativa
+
+Antes de publicar cambios, ejecutar como minimo:
+
+```bash
+python -m py_compile dashboard.py app/dashboard.py downloader.py processor.py run.py src/downloader.py src/processor.py
+streamlit run dashboard.py
+```
+
+La app publicada puede quedar dormida en Streamlit Cloud por inactividad. Si aparece la pantalla `Zzzz`, usar el boton de despertar y confirmar que renderice el tablero con KPIs y filtros.
