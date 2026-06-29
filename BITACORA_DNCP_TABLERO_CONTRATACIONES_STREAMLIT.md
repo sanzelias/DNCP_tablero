@@ -118,3 +118,109 @@
 * Publicar solo desde commits revisados localmente.
 * Agregar validacion automatica minima: compilacion Python, carga de Parquet y smoke test Streamlit.
 * Registrar cada actualizacion de datos con manifiesto y bitacora.
+
+## 2026-06-29 19:20
+
+### Proyecto
+
+* Nombre: DNCP Tablero Streamlit
+* Cliente o institucion: Proyecto de analisis de contrataciones publicas Paraguay
+* Ruta local: `G:\.shortcut-targets-by-id\1qg2zKQViUr0GmifBOXMKLGLYRg2EqyPB\BIGDATA_PROYECTO_CONTRATACIONES\DNCP_tablero_repo`
+* Repositorio: `https://github.com/sanzelias/DNCP_tablero`
+* URL publica: `https://tablero-dashboard-dncp.streamlit.app/`
+* Responsable: Diego / Codex
+* Version: `2026.06.29-ux`
+
+### Objetivo de la intervencion
+
+* Mejorar radicalmente la experiencia de usuario del tablero publicado.
+* Crear un panel de filtros claro y persistente.
+* Reorganizar la app para que sea comprensible para lectura ejecutiva.
+
+### Diagnostico inicial
+
+* La app era accesible, pero se veia como prototipo tecnico desordenado.
+* Los filtros existian de forma limitada y no eran suficientemente visibles.
+* Algunos KPIs y graficos usaban agregados globales por anio, por lo que no respondian plenamente a filtros de entidad/proveedor/modalidad.
+* La navegacion no separaba bien resumen, llamados, adjudicaciones, alertas y trazabilidad.
+
+### Acciones realizadas
+
+* Se redisenio `dashboard.py` con estructura ejecutiva.
+* Se agrego estilo institucional con paleta verde/gris/dorado y tarjetas KPI.
+* Se creo panel lateral de filtros por periodo, entidad, proveedor, RUC, modalidad, nivel de alerta y sobreprecio positivo.
+* Se agrego franja de filtros activos y conteos resultantes.
+* Se reorganizaron las vistas en:
+  `Resumen ejecutivo`, `Llamados`, `Adjudicaciones`, `Alertas de precio` y `Fuentes`.
+* Se separaron graficos de cantidades y montos para no mezclar escalas.
+* Se recalculan series anuales desde datos filtrados para que los filtros afecten KPIs, graficos y tablas.
+* Se limpio la lectura de niveles de alerta quitando simbolos en la tabla.
+* Se agrego vista de trazabilidad con inventario de archivos Parquet.
+
+### Archivos modificados
+
+* `dashboard.py`
+* `README.md`
+* `BITACORA_DNCP_TABLERO_CONTRATACIONES_STREAMLIT.md`
+* `PROMPTS_DNCP_TABLERO_CONTRATACIONES_2026-06-29.md`
+
+### Comandos o scripts ejecutados
+
+* `python -m py_compile dashboard.py app\dashboard.py`
+* `python -m streamlit run dashboard.py --server.headless true --server.port 8508 --server.address 127.0.0.1`
+* `npx playwright screenshot --viewport-size="1440,1000" --full-page http://127.0.0.1:8508/ ...`
+* `npx playwright screenshot --viewport-size="390,844" --full-page http://127.0.0.1:8508/ ...`
+* Prueba Playwright de filtro `Entidad contiene = IPS`.
+
+### Resultados verificados
+
+* La app compila sin errores.
+* La app local responde HTTP 200.
+* Captura desktop verificada con panel lateral visible, KPIs, resumen ejecutivo y filtros activos.
+* Captura movil verificada con sidebar plegable de Streamlit.
+* Prueba de filtro `IPS` verificada:
+  * llamados: 500;
+  * items adjudicados: 65.485;
+  * comparaciones de precio: 1.118;
+  * monto estimado: `Gs. 20,6 bill.`;
+  * monto adjudicado: `Gs. 13,7 bill.`.
+
+### Pruebas realizadas
+
+* Compilacion Python.
+* Smoke test HTTP local.
+* Render local escritorio.
+* Render local movil.
+* Navegacion por pestanas `Llamados`, `Adjudicaciones`, `Alertas de precio` y `Fuentes`.
+* Prueba funcional de filtro textual.
+
+### Errores o incidentes
+
+* El primer patron selector+texto no disparaba claramente el filtro libre; se separo selector sugerido y texto libre, usando prioridad del texto libre.
+* El formato compacto de moneda afectaba el prefijo `Gs.`; se corrigio con formateo decimal separado.
+
+### Soluciones aplicadas
+
+* Filtros persistentes y realmente conectados a indicadores, tablas y graficos.
+* KPIs ejecutivos con montos compactos legibles.
+* Lenguaje prudente en alertas de precios.
+* Vista de fuentes y limitaciones para trazabilidad.
+
+### Pendientes
+
+* Verificar URL publica luego del push y redeploy de Streamlit Cloud.
+* Si Streamlit queda dormido o no redeploya, despertar o reiniciar desde Streamlit Cloud.
+* Completar pipeline reproducible de datos DNCP/OCDS y manifiestos hash/tamano/fecha.
+
+### Riesgos
+
+* Streamlit Cloud puede demorar en redeployar tras el push.
+* El sidebar movil depende del comportamiento nativo de Streamlit; es funcional, pero ocupa gran parte del viewport cuando esta abierto.
+* La reproducibilidad de datos sigue limitada por falta de pipeline completo.
+
+### Recomendaciones
+
+* No volver a mezclar montos y cantidades en un mismo grafico.
+* Mantener la regla de filtros fan-out: todo filtro debe afectar KPIs, graficos, tablas, alertas y detalle.
+* Evitar lenguaje acusatorio en alertas de precios.
+* Usar la vista `Fuentes` como punto de control antes de discutir resultados.

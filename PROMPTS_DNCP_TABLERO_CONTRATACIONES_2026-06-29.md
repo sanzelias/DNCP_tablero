@@ -25,3 +25,15 @@ Contexto operativo aplicado:
 ```text
 Se revisaron instrucciones AGENTS.md compartidas en la conversacion, carpeta maestra institucional, repo local, rama remota y URL publicada.
 ```
+
+Usuario:
+
+```text
+se puede acceder a la app, pero esta desordenado, no se entiende , no hay panel de filtros, etc. Trabaja en mejorarla radicalmente.
+```
+
+Contexto operativo aplicado:
+
+```text
+Se redisenio el dashboard Streamlit como tablero ejecutivo con panel lateral de filtros, resumen, vistas por modulo, filtros fan-out y trazabilidad.
+```

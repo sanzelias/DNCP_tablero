@@ -6,6 +6,18 @@ La app funciona directamente con los archivos Parquet incluidos en `cache/`, sin
 
 URL publica verificada: https://tablero-dashboard-dncp.streamlit.app/
 
+## Version UX ejecutiva
+
+La version `2026.06.29-ux` reorganiza el tablero como una herramienta de lectura ejecutiva:
+
+- Panel lateral persistente de filtros por periodo, entidad, proveedor, RUC, modalidad y nivel de alerta.
+- Filtros aplicados a KPIs, graficos, tablas y senales de precios.
+- Vista `Resumen ejecutivo` con KPIs principales, lectura rapida, top entidades y distribucion de alertas.
+- Vista `Llamados` con cantidades y montos separados para evitar mezclar escalas.
+- Vista `Adjudicaciones` con ranking de proveedores y detalle de items.
+- Vista `Alertas de precio` con lenguaje prudente: senales para revision, no prueba legal.
+- Vista `Fuentes` con inventario de cache, cobertura y limitaciones de trazabilidad.
+
 ## Ejecutar localmente
 
 ```bash
